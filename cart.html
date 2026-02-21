@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotpec | Cart & Payment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="Site keywords here">
+    <meta name="description" content="">
+    <meta name='copyright' content=''>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Title -->
+    <title>Hotpec orphanage</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="img/logo/favicon.ico">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- Nice Select CSS -->
+    <link rel="stylesheet" href="css/nice-select.css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- icofont CSS -->
+    <link rel="stylesheet" href="css/icofont.css">
+    <!-- Slicknav -->
+    <link rel="stylesheet" href="css/slicknav.min.css">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="css/owl-carousel.css">
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="css/datepicker.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="css/animate.min.css">
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    
+    <!-- Medipro CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+   <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .cart-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .cart-items {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .payment-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: fit-content;
+        }
+
+        .form-group,
+       .form-group label {
+           display: block;
+           margin-bottom: 0.5rem;
+           font-weight: bold;
+       }
+        .form-group input {
+           width: 100%;
+           padding: 0.8rem;
+           border: 1px solid #ddd;
+           border-radius: 5px;
+           font-size: 1rem;
+       }
+        .btn-submit {
+           background: #007bff;
+           color: white;
+           padding: 1rem 2rem;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           width: 100%;
+           font-size: 1.1rem;
+       }
+        .btn-submit:hover {
+           background: #0056b3;
+       }
+        .card-icons {
+           margin-bottom: 1rem;
+           font-size: 2rem;
+       }
+        .error {
+           color: red;
+           font-size: 0.9rem;
+           margin-top: 0.3rem;
+       }
+
+   </style>
+</head>
+<body>
+     <!-- Header Area -->
+     <header class="header" >
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-5 col-12">
+                        <!-- Contact -->
+                        <ul class="top-link">
+                            <li><a href="#">About</a></li>                           
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                        <!-- End Contact -->
+                    </div>
+                    <div class="col-lg-6 col-md-7 col-12">
+                        <!-- Top Contact -->
+                        <ul class="top-contact">
+                            <li><i class="fa fa-phone"></i>+237 677 201 621</li>
+                            <li><i class="fa fa-envelope"></i><a href="mailto:support@yourmail.com">hotpeczad@gmail.com</a></li>
+                        </ul>
+                        <!-- End Top Contact -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+   <div class="container">
+    <span><i class="fa fa-long-arrow-right p-3"><a href="index.html">Home</a></i></span>
+       <h2 class="text-primary font-weight-700 p-3 font-family-sanserif">HOTPEC SUPPORT & PAYMENT</h2>
+       
+       <div class="cart-section " style="display:block; padding:10px;">
+           <div class="cart-items">
+               <h2>Support Kids</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nihil aliquid corporis odit fugiat. Numquam perspiciatis,<br>
+                     sequi nihil quos excepturi doloremque quisquam facilis ipsam amet perferendis, consequuntur quasi earum eum.</p>
+
+               <!-- Cart items will be dynamically added here -->
+               <div id="cart-list">
+                   <!-- Example cart item -->
+                   <div class="cart-item">
+                       <p></p>
+                   </div>
+               </div>
+           </div>
+            <div class="payment-section " style="margin: 10px;">
+               <h6>visa Card informations</h6>
+               <div class="card-icons">
+                <i class="fa fa-visa" ></i>
+                <i class="fa fa-paypal  s-15" style="color: rgb(4, 136, 141);"></i>
+                   <i class="fab fa-cc-visa"></i>
+                   <i class="fa fa-stripe"></i>
+                   <i class="fab fa-cc-mastercard"></i>
+                   <i class="fab fa-cc-amex"></i>
+               </div>
+                <form id="payment-form" onsubmit="return validateForm(event)">
+                   <div class="form-group">
+                       <label for="cardName">Cardholder Name</label>
+                       <input type="text" id="cardName" required>
+                   </div>
+                    <div class="form-group">
+                       <label for="cardNumber">Card Number</label>
+                       <input type="text" id="cardNumber" maxlength="16" placeholder="0000 0000 0000 0000"required>
+                       <div id="cardError" class="error"></div>
+                   </div>
+                    <div class="form-group">
+                       <label for="expiry">Expiry Date</label>
+                       <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+                   </div>
+                    <div class="form-group">
+                       <label for="cvv">CVV</label>
+                       <input type="password" id="cvv" maxlength="3" required>
+                   </div>
+                    <button type="submit" class="btn-submit" id="account-info">Process Payment</button>
+               </form>
+           </div>
+       </div>
+   </div>
+
+<script>
+       function validateForm(event) {
+           event.preventDefault();
+           
+           const cardNumber = document.getElementById('cardNumber').value;
+           const cardError = document.getElementById('cardError');
+           
+           // Basic Luhn algorithm for card validation
+           function isValidCreditCard(number) {
+               let sum = 0;
+               let isEven = false;
+               
+               for (let i = number.length - 1; i >= 0; i--) {
+                   let digit = parseInt(number[i]);
+                   
+                   if (isEven) {
+                       digit *= 2;
+                       if (digit > 9) {
+                           digit -= 9;
+                       }
+                   }
+                   
+                   sum += digit;
+                   isEven = !isEven;
+               }
+               
+               return sum % 10 === 0;
+           }
+            if (!isValidCreditCard(cardNumber)) {
+               cardError.textContent = "Invalid card number";
+               return false;
+           }
+        
+            // If validation passes
+           alert("Payment processed successfully!");
+           return true;
+           if (!isValidpayment(account-info)){
+
+           }
+       }
+         // Format expiry date input
+         document.getElementById('expiry').addEventListener('input', function(e) {
+           let value = e.target.value;
+           value = value.replace(/\D/g, '');
+           if (value.length >= 2) {
+               value = value.slice(0,2) + '/' + value.slice(2);
+           }
+           e.target.value = value;
+       });
+        // Format card number input
+       document.getElementById('cardNumber').addEventListener('input', function(e) {
+           let value = e.target.value;
+           value = value.replace(/\D/g, '');
+           e.target.value = value;
+       });
+   </script>
+</body>
+</html>

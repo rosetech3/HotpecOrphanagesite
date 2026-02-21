@@ -1,0 +1,311 @@
+<?php
+require_once 'config.php';
+
+$errors = [];
+$success = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = sanitize($_POST['username']);
+    $email = sanitize($_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    
+    // Validation
+    if (empty($username)) {
+        $errors[] = "Username is required";
+    } elseif (strlen($username) < 3) {
+        $errors[] = "Username must be at least 3 characters";
+    } elseif (!preg_match('/^[a-zA-Z0-9_]+$/', $username)) {
+        $errors[] = "Username can only contain letters, numbers, and underscores";
+    }
+    
+    if (empty($email)) {
+        $errors[] = "Email is required";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format";
+    }
+    
+    if (empty($password)) {
+        $errors[] = "Password is required";
+    } elseif (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters";
+    }
+    
+    if ($password !== $confirm_password) {
+        $errors[] = "Passwords do not match";
+    }
+    
+    // Check if username or email already exists
+    if (empty($errors)) {
+        $conn = getDBConnection();
+        
+        $stmt = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $errors[] = "Username or email already exists";
+        }
+        
+        $stmt->close();
+    }
+    
+    // Insert user into database
+    if (empty($errors)) {
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $username, $email, $hashed_password);
+        
+        if ($stmt->execute()) {
+            $success = "Registration successful! You can now <a href='login.html'>login</a>";
+            $username = $email = '';
+        } else {
+            $errors[] = "Registration failed. Please try again.";
+        }
+        
+        $stmt->close();
+        $conn->close();
+    }
+}
+?>
+
+<!Doctype html>
+<html class="no-js" lang="zxx">
+    <head>
+        <!-- Meta Tags -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="keywords" content="Site keywords here">
+		<meta name="description" content="">
+		<meta name='copyright' content=''>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<!-- Title -->
+        <title>Hotpec | Sign Up</title>
+		
+		<!-- Favicon -->
+		<link rel="icon" href="img/logo/favicon.ico">
+		
+		<!-- Google Fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Poppins:200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<!-- Nice Select CSS -->
+		<link rel="stylesheet" href="css/nice-select.css">
+		<!-- Font Awesome CSS -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+		<!-- icofont CSS -->
+        <link rel="stylesheet" href="css/icofont.css">
+		<!-- Slicknav -->
+		<link rel="stylesheet" href="css/slicknav.min.css">
+		<!-- Owl Carousel CSS -->
+        <link rel="stylesheet" href="css/owl-carousel.css">
+		<!-- Datepicker CSS -->
+		<link rel="stylesheet" href="css/datepicker.css">
+		<!-- Animate CSS -->
+        <link rel="stylesheet" href="css/animate.min.css">
+		<!-- Magnific Popup CSS -->
+        <link rel="stylesheet" href="css/magnific-popup.css">
+		
+		<!-- Medipro CSS -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        	
+		<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+        }
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c33;
+        }
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3c3;
+        }
+        .link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    </head>
+    <body>
+			
+		<!-- Start Contact Us -->
+		<div class="container">
+        <h2>Create Account</h2>
+        <a href="index.html"><i class="fa-long-arrow-right"></i>Back home</a>
+        
+        <?php if (!empty($errors)): ?>
+            <div class="error">
+                <?php foreach ($errors as $error): ?>
+                    <p><?php echo $error; ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($success): ?>
+            <div class="success"><?php echo $success; ?></div>
+        <?php endif; ?>
+        
+        <form method="POST" action="">
+            <div class="form-group">
+                <label>Username</label>
+                <!-- <input type="text" name="username" value="<?php echo isset($username) ? $username : ''; ?>" required> -->
+                <input type="text" name="username" placeholder="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <!-- <input type="email" name="email" value="<?php echo isset($email) ? $email : ''; ?>" required> -->
+                <input type="email" name="email" placeholder="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="password" required>
+            </div>
+            
+            <button type="submit" class="btn" ><a href="./dashboard.html"></a>Sign Up</button>
+        </form>
+        
+        <div class="link">
+            Already have an account? <a href="./login.html">Login here</a>
+        </div>
+    </div>
+		
+				
+		<!-- jquery Min JS -->
+        <script src="js/jquery.min.js"></script>
+		<!-- jquery Migrate JS -->
+		<script src="js/jquery-migrate-3.0.0.js"></script>
+		<!-- jquery Ui JS -->
+		<script src="js/jquery-ui.min.js"></script>
+		<!-- Easing JS -->
+        <script src="js/easing.js"></script>
+		<!-- Color JS -->
+		<script src="js/colors.js"></script>
+		<!-- Popper JS -->
+		<script src="js/popper.min.js"></script>
+		<!-- Bootstrap Datepicker JS -->
+		<script src="js/bootstrap-datepicker.js"></script>
+		<!-- Jquery Nav JS -->
+        <script src="js/jquery.nav.js"></script>
+		<!-- Slicknav JS -->
+		<script src="js/slicknav.min.js"></script>
+		<!-- ScrollUp JS -->
+        <script src="js/jquery.scrollUp.min.js"></script>
+		<!-- Niceselect JS -->
+		<script src="js/niceselect.js"></script>
+		<!-- Tilt Jquery JS -->
+		<script src="js/tilt.jquery.min.js"></script>
+		<!-- Owl Carousel JS -->
+        <script src="js/owl-carousel.js"></script>
+		<!-- counterup JS -->
+		<script src="js/jquery.counterup.min.js"></script>
+		<!-- Steller JS -->
+		<script src="js/steller.js"></script>
+		<!-- Wow JS -->
+		<script src="js/wow.min.js"></script>
+		<!-- Magnific Popup JS -->
+		<script src="js/jquery.magnific-popup.min.js"></script>
+		<!-- Counter Up CDN JS -->
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+		<!-- Google Map API Key JS -->
+		<script src="https://maps.google.com/maps/api/js?key=AIzaSyDGqTyqoPIvYxhn_Sa7ZrK5bENUWhpCo0w"></script>
+		<!-- Gmaps JS -->
+		<script src="js/gmaps.min.js"></script>
+		<!-- Map Active JS -->
+		<script src="js/map-active.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Main JS -->
+		<script src="js/main.js"></script>
+    </body>
+</html>
